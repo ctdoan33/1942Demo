@@ -1,55 +1,7 @@
 <html>
 <head>
 	<title>1942 Game</title>
-
-<style type="text/css">
-	body{
-		background-color:black;
-	}
-	#container{
-		background: url('background.jpg');
-		width:550px;
-		height:550px;
-	}
-	#hero{
-		background: url('1942.gif');
-		background-position: -85px -180px;
-		width:28px;
-		height:28px;
-		position:absolute;
-	}
-	.enemy0{
-		background: url('1942.gif');
-		background-position: -60px -10px;
-		width:28px;
-		height:28px;
-		position:absolute;
-	}
-	.enemy1{
-		background: url('1942.gif');
-		background-position: -30px -10px;
-		width:28px;
-		height:28px;
-		position:absolute;
-	}
-	.bullet{
-		background: url('1942.gif');
-		background-position: -185px -400px;
-		width:18px;
-		height:18px;
-		position:absolute;
-	}
-	#score{
-		position:absolute;
-		border:10px solid red;
-		top:20px;
-		left:800px;
-		background-color:white;
-		padding:10px;
-		font-size:30px;
-		font-family: Arial;	
-	}
-</style>
+	<link rel="stylesheet" href="1942.css">
 </head>
 <body>
 	<div id='container'>
@@ -71,7 +23,7 @@
 	}
 	var enemies=[];
 	var bullets=[];
-	var explosions=[];
+	var explosionloc=[];
 	function displayHero(){
 		document.getElementById("hero").style['top'] = hero.y+ "px";
 		document.getElementById("hero").style['left'] = hero.x+ "px";
@@ -93,7 +45,7 @@
 			enemies[i].y+=2;
 			if(enemies[i].y>540){
 				enemies[i].y=0;
-				enemies[i].x=Math.random()*500;
+				enemies[i].x=Math.random()*522;
 			}
 		}
 	}
@@ -115,13 +67,14 @@
 	}
 	function makeExplosion(){
 		document.getElementById("explode").play();
-		var exploding=explosions;
+		var location=explosionloc;
 		var x=document.createElement("div");
-		x.id=String(exploding[0])+String(exploding[1]);
-		x.style="background: url('1942.gif'); background-position: -40px -40px; width:20px; height:20px; position:absolute; top:"+exploding[1]+"px; left:"+exploding[0]+"px;";
+		var explosionid=String(location[0])+String(location[1]);
+		x.id=explosionid;
+		x.style="background: url('1942.gif'); background-position: -40px -40px; width:20px; height:20px; position:absolute; top:"+location[1]+"px; left:"+location[0]+"px;";
 		var y=document.getElementById("explosions");
 		y.appendChild(x);
-		var z=document.getElementById(String(exploding[0])+String(exploding[1]));
+		var z=document.getElementById(explosionid);
 		setTimeout(function(){z.style.backgroundPosition = "-65px -40px";}, 400);
 		setTimeout(function(){z.style.backgroundPosition = "-85px -40px";}, 800);
 		setTimeout(function(){z.style.backgroundPosition = "-110px -30px"; z.style.width = "30px"; z.style.height ="30px"}, 1200);
@@ -145,10 +98,10 @@
 	function detectBulletCollision(){
 		for(var i=0; i<bullets.length; i++){
 			for(var j=0; j<enemies.length; j++){
-				if(Math.abs(bullets[i].x-enemies[j].x)<10 && Math.abs(bullets[i].y-enemies[j].y)<10){
+				if(Math.abs(bullets[i].x-(enemies[j].x+5))<14 && Math.abs(bullets[i].y-(enemies[j].y+5))<14){
 					bullets[i]=bullets[bullets.length-1];
 					bullets.pop();
-					explosions=[enemies[j].x, enemies[j].y];
+					explosionloc=[enemies[j].x+7, enemies[j].y+7];
 					enemies[j]=enemies[enemies.length-1];
 					enemies.pop();
 					makeExplosion();
@@ -159,7 +112,7 @@
 	}
 	function detectAirplaneCollision(){
 		for(var j=0; j<enemies.length; j++){
-				if(Math.abs(hero.x-enemies[j].x)<10 && Math.abs(hero.y-enemies[j].y)<10){
+				if(Math.abs(hero.x-enemies[j].x)<14 && Math.abs(hero.y-enemies[j].y)<14){
 					enemies[j]=enemies[enemies.length-1];
 					enemies.pop();
 					score-=500;
@@ -182,11 +135,16 @@
 		}else if(a.keyCode==32){
 			bullets.push({x: hero.x+5, y: hero.y-12});
 		}
+		if(hero.x<0){
+			hero.x=0;
+		}else if(hero.x>522){
+			hero.x=522;
+		}else if(hero.y<0){
+			hero.y=0;
+		}else if(hero.y>522){
+			hero.y=522;
+		}
 	}
-	//to implement:
-	//more accurate hit detection (detection is currently on corner of enemy and bullet)
-	//restrict hero movement to play area
-	//more enemy types
 </script>
 
 </body>

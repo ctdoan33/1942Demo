@@ -1,0 +1,57 @@
+* {
+	vertical-align: baseline;
+	font-weight: inherit;
+	font-family: inherit;
+	font-style: inherit;
+	font-size: 100%;
+	border: 0 none;
+	outline: 0;
+	padding: 0;
+	margin: 0;
+}
+body{
+    background-color:black;
+}
+#container{
+    background: url('background.jpg');
+    width:550px;
+    height:550px;
+}
+#hero{
+    background: url('1942.gif');
+    background-position: -85px -180px;
+    width:28px;
+    height:28px;
+    position:absolute;
+}
+.enemy0{
+    background: url('1942.gif');
+    background-position: -60px -10px;
+    width:28px;
+    height:28px;
+    position:absolute;
+}
+.enemy1{
+    background: url('1942.gif');
+    background-position: -30px -10px;
+    width:28px;
+    height:28px;
+    position:absolute;
+}
+.bullet{
+    background: url('1942.gif');
+    background-position: -185px -400px;
+    width:18px;
+    height:18px;
+    position:absolute;
+}
+#score{
+    position:absolute;
+    border:10px solid red;
+    top:20px;
+    left:800px;
+    background-color:white;
+    padding:10px;
+    font-size:30px;
+    font-family: Arial;	
+}
